@@ -1,8 +1,12 @@
+import random
+
 cash = 1222.20
 prices = [10.99, 14.99, 20.99]
 subscriptionLevel = -1
 isSubscribed = False
 users = 0
+
+songs = ["Yonaguni", "Ultralight Beam", "Last Christmas"]
 
 # sub index
 # starts from 1 because sub - 1
@@ -74,6 +78,12 @@ def subscribe_for_more(months, sub):
     cash -= price
     print_bill(cash, price, True)
 
+
+def recommend_song():
+    print("We've got a song for you")
+    print("Hope you like it!")
+    song = random.randrange(len(songs))
+    print(songs[song])
 
 
 # buy_subscription(4)
