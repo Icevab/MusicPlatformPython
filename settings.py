@@ -1,5 +1,6 @@
 import config
 import random
+import math
 
 
 class User:
@@ -64,7 +65,7 @@ class User:
         song = random.randrange(len(config.songs))
         print(config.songs[song])
 
-    def add_song(self, song_name):
+    def add_song(self, Song):
         """It has two adding command:
            The first one adds it to config.songs
            So the recommend_song actually works
@@ -72,42 +73,81 @@ class User:
            It is a list with every user's song
            It gets add as an instance of Song class
         """
-        print(f"You want to add {song_name} right?")
-        config.songs.append(song_name)
-        self.song_list.append(
-            Song(song_name=song_name, length=174, author=self.nickname))
-        print(f"{song_name} added to songlist!")
+        print(f"You want to add {Song.song_name} right?")
+        config.songs.append(Song.song_name)
+        self.song_list.append(Song)
+        print(f"{Song.song_name} added to songlist!")
         print(config.songs)
         print(self.song_list)
 
+    def remove_song_name(self, song_name):
+        print("Make sure that the song's name is written correct")
+        song_index = self.song_list.index(song_name)
+        self.song_list.pop(song_index)
+
+    def remove_song_index(self, song_index):
+        print("Make sure that the index of the song is correct")
+        print("The count starts from 0, keep that in mind")
+        self.song_list.pop(song_index)
+
 
 class Song:
-    def __init__(self, song_name, length, author):
+    def __init__(self, song_name, length, author, streams):
         self.song_name = song_name
         self.length = length
         self.author = author
+        self.streams = streams
 
     def __repr__(self):
         return self.song_name
 
+    def convert_length(self, isColon=True):
+        minutes = math.floor(self.length / 60)
+        seconds = self.length % 60
+
+        if (isColon):
+            result = f"{minutes}:{seconds}"
+        else:
+            result = f"{minutes}m {seconds}s"
+
+        return result
+
+
+class Playlist:
+    def __init__(self, playlist_name, song_list):
+        self.playlist_name = playlist_name
+        self.song_list = song_list
+
+    def __repr__(self):
+        return self.playlist_name
+
+    def print_playlist(self):
+        for song in self.song_list:
+            print(f" - {song}")
+
 
 # this calls User.init
-song = Song(song_name="Rook B1", length=231, author="s")
-song2 = Song(song_name="Rook B2", length=231, author="cmyui")
+song = Song(song_name="Rook B1", length=231, author="s", streams=20459)
+print(song.convert_length(False))
+song2 = Song(song_name="Rook B2", length=231, author="cmyui", streams=34986)
 song_list = [song, song2]
 
 user = User(nickname="Boom", cash=0, subscription_level=-1, is_subscribed=False,
-            my_streams=9289, song_list=[song])
+            my_streams=9289, song_list=[song, song2])
 
 
 # then u can use this object
-print(user.is_subscribed)
+# print(user.is_subscribed)
 
 # and modify it
 user.cash += 69
 
-print(user.money_made())
+# print(user.money_made())
 
-print(User.add_song.__doc__)
-user.add_song("Le Song")
-print(user.song_list)
+# print(User.add_song.__doc__)
+user.add_song(Song(song_name="Le Song", length=231, author="Me", streams=0))
+# print(user.song_list)
+# user.remove_song_name("Le Song")
+# print(user.song_list)
+playlist = Playlist(playlist_name="Boom created this", song_list=[song, song2])
+playlist.print_playlist()

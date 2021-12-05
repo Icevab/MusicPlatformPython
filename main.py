@@ -7,4 +7,6 @@ def streaming_your_song():
     print(f"You earned {config.cash_per_stream}$")
 
 
+
+
 # buy_subscription(4)
