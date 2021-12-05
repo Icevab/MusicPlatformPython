@@ -82,13 +82,34 @@ class User:
 
     def remove_song_name(self, song_name):
         print("Make sure that the song's name is written correct")
-        song_index = self.song_list.index(song_name)
+        song_index = -1
+        for song in range(len(self.song_list)):
+            if (self.song_list[song].song_name == song_name):
+                song_index = song
+            else:
+                continue
+
         self.song_list.pop(song_index)
 
     def remove_song_index(self, song_index):
         print("Make sure that the index of the song is correct")
         print("The count starts from 0, keep that in mind")
         self.song_list.pop(song_index)
+
+    def get_cash(self, value):
+        self.cash += value
+
+    def stream_song(self, song_name):
+        song_index = -1
+        for song in range(len(self.song_list)):
+            if (self.song_list[song].song_name == song_name):
+                song_index = song
+            else:
+                continue
+
+        print(f"Before: {self.song_list[song_index].streams}")
+        self.song_list[song_index].streams += 1
+        print(f"After: {self.song_list[song_index].streams}")
 
 
 class Song:
@@ -123,7 +144,8 @@ class Playlist:
 
     def print_playlist(self):
         for song in self.song_list:
-            print(f" - {song}")
+            print(
+                f" - {song}         {song.convert_length(True)}")
 
 
 # this calls User.init
@@ -146,8 +168,12 @@ user.cash += 69
 
 # print(User.add_song.__doc__)
 user.add_song(Song(song_name="Le Song", length=231, author="Me", streams=0))
-# print(user.song_list)
-# user.remove_song_name("Le Song")
-# print(user.song_list)
+print(user.song_list)
+user.remove_song_index(1)
+print(user.song_list)
 playlist = Playlist(playlist_name="Boom created this", song_list=[song, song2])
 playlist.print_playlist()
+# user.stream_song("Rook B1")
+# user.stream_song("Rook B1")
+# user.stream_song("Rook B1")
+# user.stream_song("Rook B1")
