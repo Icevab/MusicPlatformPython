@@ -17,6 +17,9 @@ class User:
         self.song_list = song_list
         # the object is also known as an instance of the class
 
+    def __repr__(self):
+        return self.nickname
+
     def money_made(self):
         return self.my_streams * config.cash_per_stream
 
@@ -118,6 +121,7 @@ class Song:
         self.length = length
         self.author = author
         self.streams = streams
+        self.link = ""
 
     def __repr__(self):
         return self.song_name
@@ -133,6 +137,14 @@ class Song:
 
         return result
 
+    def create_link(self):
+        """Creates link for a song"""
+
+        result = f"i.cmyui.xyz/{config.random_letters_random_case(self.song_name)}{config.random_numbers(7)}"
+
+        self.link = result
+        return result
+
 
 class Playlist:
     def __init__(self, playlist_name, song_list):
@@ -146,6 +158,16 @@ class Playlist:
         for song in self.song_list:
             print(
                 f" - {song}         {song.convert_length(True)}")
+
+    def play_playlist(self):
+        for i in range(len(self.song_list)):
+            print(song_list[i])
+
+    def add_song(self, song):
+        if (not isinstance(song, Song)):
+            return
+
+        self.song_list[len(self.song_list)] = song
 
 
 # this calls User.init
@@ -173,7 +195,10 @@ user.remove_song_index(1)
 print(user.song_list)
 playlist = Playlist(playlist_name="Boom created this", song_list=[song, song2])
 playlist.print_playlist()
+playlist.play_playlist()
 # user.stream_song("Rook B1")
 # user.stream_song("Rook B1")
 # user.stream_song("Rook B1")
 # user.stream_song("Rook B1")
+print(song.create_link())
+print(song.link)
