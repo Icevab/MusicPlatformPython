@@ -1,10 +1,12 @@
 import config
 import random
 import math
+from time import sleep
+from urllib.parse import urlparse
 
 
 class User:
-    def __init__(self, nickname, cash, subscription_level, is_subscribed, my_streams, song_list) -> None:
+    def __init__(self, nickname, cash, subscription_level, is_subscribed, my_streams, song_list, password, isLoged) -> None:
         # this function is called when a
         # user is created, like x = User()
         # self represents their User object.
@@ -15,6 +17,8 @@ class User:
         self.is_subscribed = is_subscribed
         self.my_streams = my_streams
         self.song_list = song_list
+        self.password = password
+        self.isLoged = isLoged
         # the object is also known as an instance of the class
 
     def __repr__(self):
@@ -22,6 +26,19 @@ class User:
 
     def money_made(self):
         return self.my_streams * config.cash_per_stream
+
+    def login(self):
+        print("Login: ")
+        nickname = input()
+        print("Password: ")
+        password = input()
+
+        if (nickname == self.nickname and password == self.password):
+            print("Welcome back")
+            self.isLoged == True
+        else:
+            print("Sorry we can't do that")
+            self.isLoged == False
 
     def buy_subscription(self, sub):
         if (sub <= len(config.prices) and self.cash >= config.prices[sub]):
@@ -110,6 +127,19 @@ class User:
             else:
                 continue
 
+        second = self.song_list[song_index].length / 10
+        seconds = math.ceil(self.song_list[song_index].length / second)
+        song_string = f" - {song_name}         {self.song_list[song_index].convert_length()}"
+
+        for i in range(seconds):
+            song_string = song_string[:(
+                i + 2 + len(song_name))] + "=" + song_string[(i + 3 + len(song_name)):]
+            print(song_string)
+            sleep(0.01)
+
+        print(song_string)
+        print(math.ceil(self.song_list[song_index].length / second))
+
         print(f"Before: {self.song_list[song_index].streams}")
         self.song_list[song_index].streams += 1
         print(f"After: {self.song_list[song_index].streams}")
@@ -121,7 +151,7 @@ class Song:
         self.length = length
         self.author = author
         self.streams = streams
-        self.link = ""
+        self.link = self.create_link()
 
     def __repr__(self):
         return self.song_name
@@ -155,9 +185,9 @@ class Playlist:
         return self.playlist_name
 
     def print_playlist(self):
-        for song in self.song_list:
+        for i, song in enumerate(self.song_list):
             print(
-                f" - {song}         {song.convert_length(True)}")
+                f" - {i + 1}  {song}         {song.convert_length(True)}")
 
     def play_playlist(self):
         for i in range(len(self.song_list)):
@@ -174,10 +204,11 @@ class Playlist:
 song = Song(song_name="Rook B1", length=231, author="s", streams=20459)
 print(song.convert_length(False))
 song2 = Song(song_name="Rook B2", length=231, author="cmyui", streams=34986)
-song_list = [song, song2]
+song3 = Song(song_name="YOSEMITE", length=235, author="Me", streams=94869)
+song_list = [song, song2, song3]
 
 user = User(nickname="Boom", cash=0, subscription_level=-1, is_subscribed=False,
-            my_streams=9289, song_list=[song, song2])
+            my_streams=9289, song_list=[song, song2], password="cmyui123", isLoged=False)
 
 
 # then u can use this object
@@ -190,15 +221,17 @@ user.cash += 69
 
 # print(User.add_song.__doc__)
 user.add_song(Song(song_name="Le Song", length=231, author="Me", streams=0))
-print(user.song_list)
+
 user.remove_song_index(1)
-print(user.song_list)
+
 playlist = Playlist(playlist_name="Boom created this", song_list=[song, song2])
 playlist.print_playlist()
 playlist.play_playlist()
-# user.stream_song("Rook B1")
-# user.stream_song("Rook B1")
-# user.stream_song("Rook B1")
-# user.stream_song("Rook B1")
-print(song.create_link())
-print(song.link)
+user.stream_song("Rook B1")
+print(song_list)
+
+for item in song_list:
+    print(f"1 + {item.length}")
+
+print("Rook B1" == urlparse("Rook%20B1"))
+print(urlparse("Rook%20B1"))

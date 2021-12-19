@@ -26,7 +26,6 @@ def random_letters_random_case(string):
     result = ""
 
     for char in string:
-        print(char)
         number = random.randint(1, 2)
         if (number == 1 and not char == " "):
             result += char.upper()
