@@ -172,7 +172,6 @@ class Song:
 
         result = f"i.cmyui.xyz/{config.random_letters_random_case(self.song_name)}{config.random_numbers(7)}"
 
-        self.link = result
         return result
 
 
@@ -224,7 +223,13 @@ user.add_song(Song(song_name="Le Song", length=231, author="Me", streams=0))
 
 user.remove_song_index(1)
 
-playlist = Playlist(playlist_name="Boom created this", song_list=[song, song2])
+views = Song(song_name="Views", length=345, author="Drake", streams=247895)
+hotline_bling = Song(song_name="Hotline Bling", length=274,
+                     author="Drake", streams=39852394)
+
+playlist = Playlist(playlist_name="Boom created this",
+                    song_list=[song, song2, song3])
+playlist2 = Playlist(playlist_name="Views", song_list=[views, hotline_bling])
 playlist.print_playlist()
 playlist.play_playlist()
 user.stream_song("Rook B1")
@@ -235,3 +240,7 @@ for item in song_list:
 
 print("Rook B1" == urlparse("Rook%20B1"))
 print(urlparse("Rook%20B1"))
+
+playlist_list = [playlist, playlist2]
+
+all_songs = [song, song2, song3, views, hotline_bling]
