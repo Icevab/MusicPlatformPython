@@ -137,21 +137,15 @@ class User:
             print(song_string)
             sleep(0.01)
 
-        print(song_string)
-        print(math.ceil(self.song_list[song_index].length / second))
-
-        print(f"Before: {self.song_list[song_index].streams}")
-        self.song_list[song_index].streams += 1
-        print(f"After: {self.song_list[song_index].streams}")
-
 
 class Song:
-    def __init__(self, song_name, length, author, streams):
+    def __init__(self, song_name, length, author, streams, playlist="No playlist"):
         self.song_name = song_name
         self.length = length
         self.author = author
         self.streams = streams
         self.link = self.create_link()
+        self.playlist = self.add_to_playlist(playlist)
 
     def __repr__(self):
         return self.song_name
@@ -173,6 +167,10 @@ class Song:
         result = f"i.cmyui.xyz/{config.random_letters_random_case(self.song_name)}{config.random_numbers(7)}"
 
         return result
+
+    def add_to_playlist(self, value):
+        if (value == "No playlist"):
+            return self.song_name
 
 
 class Playlist:
@@ -196,8 +194,20 @@ class Playlist:
         if (not isinstance(song, Song)):
             return
 
-        self.song_list[len(self.song_list)] = song
+        self.song_list.append(song)
+        song.playlist = self.playlist_name
 
+
+# creating Views
+keep_the_family_close = Song(
+    song_name="Keep The Family Close", length=432, author="Drake", streams=242312)
+views = Song(song_name="Views", length=345, author="Drake", streams=247895)
+hotline_bling = Song(song_name="Hotline Bling", length=274,
+                     author="Drake", streams=39852394)
+
+
+playlist2 = Playlist(playlist_name="Views", song_list=[
+                     keep_the_family_close, views, hotline_bling])
 
 # this calls User.init
 song = Song(song_name="Rook B1", length=231, author="s", streams=20459)
@@ -208,6 +218,8 @@ song_list = [song, song2, song3]
 
 user = User(nickname="Boom", cash=0, subscription_level=-1, is_subscribed=False,
             my_streams=9289, song_list=[song, song2], password="cmyui123", isLoged=False)
+nine = Song(song_name="9", length=245,
+            author="Drake", streams=349583, playlist=playlist2)
 
 
 # then u can use this object
@@ -223,13 +235,9 @@ user.add_song(Song(song_name="Le Song", length=231, author="Me", streams=0))
 
 user.remove_song_index(1)
 
-views = Song(song_name="Views", length=345, author="Drake", streams=247895)
-hotline_bling = Song(song_name="Hotline Bling", length=274,
-                     author="Drake", streams=39852394)
 
 playlist = Playlist(playlist_name="Boom created this",
                     song_list=[song, song2, song3])
-playlist2 = Playlist(playlist_name="Views", song_list=[views, hotline_bling])
 playlist.print_playlist()
 playlist.play_playlist()
 user.stream_song("Rook B1")
@@ -241,6 +249,9 @@ for item in song_list:
 print("Rook B1" == urlparse("Rook%20B1"))
 print(urlparse("Rook%20B1"))
 
+
 playlist_list = [playlist, playlist2]
 
-all_songs = [song, song2, song3, views, hotline_bling]
+all_songs = [song, song2, song3, views, hotline_bling, nine, keep_the_family_close]
+
+playlist2.add_song(nine)
