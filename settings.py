@@ -255,3 +255,5 @@ playlist_list = [playlist, playlist2]
 all_songs = [song, song2, song3, views, hotline_bling, nine, keep_the_family_close]
 
 playlist2.add_song(nine)
+
+# maybe i can get all of instances of class Song? 

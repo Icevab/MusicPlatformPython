@@ -33,6 +33,11 @@ class Item(BaseModel):
     link: str
 
 
+class Playlist(BaseModel):
+    playlist_name: str
+    song_list: list
+
+
 @app.get("/")
 async def main():
     return {"song": f"{settings.song.song_name}"}
@@ -49,6 +54,11 @@ async def song(song_name):
             continue
 
     return a_song
+
+
+@app.get("/all_songs")
+async def all_songs():
+    return settings.all_songs
 
 
 @app.post("/stream_song/{song_name}")
@@ -103,3 +113,28 @@ async def artist(artist_name):
     return songs
 
 
+@app.post("/playlists/create_playlist")
+async def create_playlist(item: Playlist):
+    new_playlist = settings.Playlist(
+        playlist_name=item.playlist_name, song_list=item.song_list)
+
+    fixed_song_list = []
+
+    for song in new_playlist.song_list:
+        new_song = settings.Song(song_name=song["song_name"], length=song["length"],
+                                 author=song["author"], streams=song["streams"], playlist=song["playlist"])
+        fixed_song_list.append(new_song)
+
+    for song in fixed_song_list:
+        if (song not in settings.all_songs):
+            settings.all_songs.append(song)
+        else:
+            continue
+
+    settings.playlist_list.append(new_playlist)
+    return new_playlist
+
+
+@app.get("/all_playlists")
+async def all_playlists():
+    return settings.playlist_list
